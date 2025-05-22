@@ -3,10 +3,8 @@ from keras.layers import TFSMLayer
 import numpy as np
 from PIL import Image
 
-# Load model wrapper
 @st.cache_resource
 def load_model():
-    # 'model' is the folder path to the extracted SavedModel
     return TFSMLayer("model", call_endpoint="serving_default")
 
 def preprocess_image(image: Image.Image, target_size=(224, 224)):
@@ -29,9 +27,9 @@ if uploaded_file:
     st.image(image, caption="Uploaded Image", use_column_width=True)
 
     input_data = preprocess_image(image)
-    preds = model(input_data)  # TFSMLayer returns a TensorFlow tensor
-    pred_tensor = list(preds.values())[0]  # get first tensor from dict
-    preds_np = pred_tensor.numpy()         # convert tensor to numpy array
+    preds = model(input_data)  
+    pred_tensor = list(preds.values())[0]  
+    preds_np = pred_tensor.numpy()
 
     pred_label = labels[np.argmax(preds_np)]
     confidence = np.max(preds_np)
